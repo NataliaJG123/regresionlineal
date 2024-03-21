@@ -1,0 +1,119 @@
+---
+title: "Regresión lineal"
+author: "Natalia Jimenez Guillen"
+date: "2024-03-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,echo=TRUE}
+nuevo_dir = "C:/regresionlineal"
+setwd(nuevo_dir)
+```
+
+#Actividad 1
+
+#Actividad 2 
+El analisis de correlación lineal de Pearson, puede mostrar la fuerza y la dirección de la relación entre dos variaibles pero no establece una relación causa-efecto entre ellas. 
+
+#Actividad 3
+La causalidad se refiere a la relación donde un evento (causa) provoca directamente otro evento (efecto). Un ejemplo de causalidad serian las variables: nivel de estudios y salario. Existe una relacion directa (causa-efecto), entre las dos variables. Cuanto más nivel de estudios tenga una persona, mayor salario obtendrá. 
+
+#Ejercicio 4
+Los parametros implicados són: el intercepto ( el cual representa el punto donde la linea de regresión intersecta con el eje y) y la pendiente (representa la inclinación de la linea de regresión en el plano cartesiano)
+
+#Ejercicio 5 
+No, ya que en un plano cartesiano el eje x, es denominado como eje de abscisas, mientras que el eje y, es denominado como eje de ordenadas. 
+
+#Ejercicio 6
+Una recta de regresión es una linia la cual puede interpretar dos variables (una independiente y otra dependiente). Mientras que un plano de regresión, se utiliza en la regresión lineal multiple para mostrar la relación entre tres variables (dos independientes y una dependiente). 
+
+#Ejercicio 7 
+Los principales supuestos del analisis de regresión lineal son los siguientes: Linealidad: La relación entre las variables es lineal.Homocedasticidad: La varianza de los errores es constante.Normalidad: Los errores siguen una distribución normal. Independencia de los errores: Los errores no están correlacionados entre sí. Ausencia de multicolinealidad: No hay correlación perfecta entre variables independientes. No autocorrelación de los errores: No hay patrones sistemáticos en los errores.
+
+#Ejercicio 8 
+```{r, echo=TRUE}
+distancia <-c(1.1, 100.2, 90.3, 5.4, 57.5, 6.6, 34.7, 65.8, 57.9, 86.1)
+cuentas <- c(110, 2, 6, 98, 40, 94, 31, 5, 8, 10)
+
+datos <- data.frame(distancia, cuentas)
+
+recta_regresión <- lm(cuentas ~ distancia, data = datos)
+
+coeficientes <- coef(recta_regresión)
+intercepto <- coeficientes[1]
+pendiente <- coeficientes[2]
+
+plot (cuentas ~ distancia, data=datos, main= "Recta de regresión", xlab="Distancia", ylab = "Cuentas") 
+abline(recta_regresión, col="blue")
+```
+#9
+El intercepto de la ecuación de regresión lineal indica el valor esperado de "cuentas" cuando "distancia" es igual a cero. La pendiente de la regresión indica el cambio esperado en "cuentas" por cada unidad de cambio en "distancia"
+
+#10
+Obtener un intercepto con un valor de '0' en un modelo de regresión lineal en R implica que, según el modelo, cuando todas las variables independientes son iguales a cero, la variable dependiente también es igual a cero. Esto puede tener implicaciones en la interpretación del modelo y su relevancia para el problema específico que se está abordando.
+
+#11
+El análisis de regresión lineal utiliza el método de mínimos cuadrados para calcular los valores de los parámetros (intercepto y pendiente) que definen la recta de regresión. Este método minimiza la suma de los cuadrados de las diferencias entre los valores observados y los valores predichos por la recta
+
+#12
+En primer lugar se obtiene la estimacion del numero de cuentas, utilizando la regresión lineal. Posteriormente se resta la estimación del valor real del numero de cunetas en el yacimiento para obtener el error.  Este error representaría la discrepancia entre la predicción de tu modelo y el valor real observado.
+
+#13
+
+```{r, echo=TRUE}
+cuentas <- c(6, 98, 40, 94, 31, 5, 8, 10)
+predicciones <- c(-6.682842, 85.520196, 28.938591, 84.216973, 53.69983, 19.924631, 28.504183, -2.121561)
+
+dataframe <- data.frame(cuentas, predicciones)
+
+residuos <- cuentas-predicciones
+print(residuos)
+```
+#14
+```{r, echo=TRUE}
+Supuesto_normalidad <- shapiro.test(residuos)
+print(Supuesto_normalidad)
+```
+
+#15
+En la modelización lineal, se emplean principalmente dos conjuntos de datos:
+
+Conjunto de datos de entrenamiento: Este conjunto se utiliza para ajustar el modelo de regresión lineal. 
+
+Conjunto de datos de prueba (o conjunto de datos de validación): Este conjunto se utiliza para evaluar el rendimiento del modelo entrenado en datos no vistos.
+
+Para llevar a cabo la preparación de estos es necesario: 
+
+Dividir los datos: Separar los datos en un conjunto de entrenamiento y otro de prueba (usualmente 70-80% para entrenamiento y el resto para prueba).
+
+Preproceso de los datos:Limpiar los valores faltantes,escalar las características si es necesario y codificar variables categóricas.
+
+Ajustar el modelo: Utilizar el conjunto de entrenamiento para ajustar el modelo de regresión lineal.
+
+Evalución del modelo: Utilizar el conjunto de prueba para evaluar el rendimiento del modelo.
+
+#16
+```{r,echo=TRUE}
+library(DAAG)
+k <- 5
+cv_resultados <- cv.lm(data = dataframe , m = regression, mfun = lm, k = k)
+
+print(cv_resultados)
+```
+
+#17
+Con un intervalo de confianza del 95%, la probabilidad de que la correlación lineal entre los coeficientes de regresión y la variable de respuesta se deba al azar es del 5%.Si se utiliza un nivel de significación (Alpha) de 0.01, entonces los coeficientes de regresión se han obtenido con un intervalo de confianza del 99%.
+
+#18
+Cuando observamos que las estimaciones son menos precisas en un determinado rango de valores en comparación con otros, esto sugiere que la heterocedasticidad podría estar presente en el modelo.
+
+#19
+La medida de precisión estadística que nos indica el porcentaje de variabilidad explicada de la variable dependiente por nuestro modelo lineal es el coeficiente de determinación, comúnmente conocido como R2 (R-cuadrado)
+
+#20
+Una observación atípica es un valor que difiere significativamente del resto de los datos en un conjunto. Por otro lado, una observación que produce apalancamiento en el modelo es aquella con valores inusuales en una o más variables independientes, lo que puede influir de manera desproporcionada en la estimación de los parámetros del modelo. Mientras que las observaciones atípicas afectan principalmente la precisión de las predicciones, las observaciones de alto apalancamiento pueden distorsionar las estimaciones de los parámetros del modelo.
+ 
